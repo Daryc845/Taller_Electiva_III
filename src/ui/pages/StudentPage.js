@@ -58,7 +58,6 @@ export function createStudentPage() {
     const code = normalizeCode(draft);
 
     const codeValidation = isValidCode(code);
-    console.log("AS");
     if (!codeValidation.valid) {
       setUI({
         errorKey: codeValidation.key,
