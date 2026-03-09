@@ -9,12 +9,17 @@ import "./styles/index.css";
 import { createAppRoot } from "./ui/app.ui.js";
 import { initTheme } from "./theme/theme.js";
 import { initLanguage } from "./i18n/i18n.js";
+import { setState } from "./state/state.js";
+import { loadActivityLog } from "./services/activity-log.service.js";
 
 initLanguage();
 
 // Aplica el tema guardado (dark por defecto + toggle).
 // Debe ejecutarse antes del primer render para evitar "flash" de tema.
 initTheme();
+
+// Carga historial persistido antes del primer render.
+setState({ activityLog: loadActivityLog() });
 
 // Montaje de la app
 const mount = document.getElementById("app");

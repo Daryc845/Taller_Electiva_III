@@ -6,6 +6,9 @@ export const state = {
   // Pantalla actual: null (home) | "teacher" | "student"
   role: null,
 
+  // Historial de actividad (más reciente primero).
+  activityLog: [],
+
   // Estado de sesión compartido entre roles (cuando aplique):
   // - code: string
   // - status: "open" | "closed" | "pending" (placeholder para futuras operaciones async)

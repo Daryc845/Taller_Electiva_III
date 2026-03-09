@@ -24,6 +24,38 @@ export const messages = {
       codeCopied: "Código copiado",
     },
 
+    activity: {
+      title: "Historial de actividad",
+      clear: "Limpiar historial",
+      empty: "Aún no hay eventos registrados.",
+      confirmClear: "Presiona de nuevo para limpiar el historial.",
+      cleared: "Historial limpiado.",
+      events: {
+        role: { selected: "Perfil seleccionado" },
+        language: { changed: "Idioma cambiado" },
+        theme: { changed: "Tema cambiado" },
+        session: {
+          opened: "Sesión abierta",
+          closed: "Sesión cerrada",
+          codeCopied: "Código copiado",
+        },
+        app: { backHome: "Volvió a inicio" },
+      },
+      detail: {
+        role: "Perfil: {role}",
+        language: "Idioma: {lang}",
+        theme: "Tema: {theme}",
+        code: "Código: {code}",
+        from: "Origen: {from}",
+      },
+      values: {
+        teacher: "Docente",
+        student: "Estudiante",
+        dark: "Oscuro",
+        light: "Claro",
+      },
+    },
+
     role: {
       title: "Selecciona tu perfil",
       teacher: "Docente",
@@ -92,6 +124,38 @@ export const messages = {
       closed: "CLOSED",
       copyCodeAria: "Copy code",
       codeCopied: "Code copied",
+    },
+
+    activity: {
+      title: "Activity log",
+      clear: "Clear history",
+      empty: "No events yet.",
+      confirmClear: "Press again to clear the history.",
+      cleared: "History cleared.",
+      events: {
+        role: { selected: "Profile selected" },
+        language: { changed: "Language changed" },
+        theme: { changed: "Theme changed" },
+        session: {
+          opened: "Session opened",
+          closed: "Session closed",
+          codeCopied: "Code copied",
+        },
+        app: { backHome: "Back to home" },
+      },
+      detail: {
+        role: "Profile: {role}",
+        language: "Language: {lang}",
+        theme: "Theme: {theme}",
+        code: "Code: {code}",
+        from: "From: {from}",
+      },
+      values: {
+        teacher: "Teacher",
+        student: "Student",
+        dark: "Dark",
+        light: "Light",
+      },
     },
 
     role: {

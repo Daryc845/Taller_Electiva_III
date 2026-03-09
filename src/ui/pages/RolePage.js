@@ -4,6 +4,7 @@
 import { setState } from "../../state/state.js";
 import { triggerRender } from "../render.js";
 import { t } from "../../i18n/i18n.js";
+import { EVENT, logEvent } from "../../services/activity-log.service.js";
 
 export function createRolePage() {
   const container = document.createElement("main");
@@ -39,6 +40,7 @@ export function createRolePage() {
 
 function selectRole(role) {
   setState({ role });
+  logEvent(EVENT.ROLE_SELECTED, { role });
   triggerRender();
 }
 
