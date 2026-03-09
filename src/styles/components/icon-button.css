@@ -1,0 +1,36 @@
+/* Icon button (theme toggle) */
+.icon-btn {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  border-radius: 999px;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+
+  transition:
+    transform var(--dur-1) var(--ease),
+    border-color var(--dur-1) var(--ease),
+    box-shadow var(--dur-1) var(--ease),
+    background var(--dur-1) var(--ease);
+}
+
+.icon-btn:hover {
+  transform: translateY(-1px);
+  border-color: var(--border-strong);
+  box-shadow: var(--glow-cyan);
+}
+
+.icon-btn:active {
+  transform: translateY(0px);
+}
+
+.icon-btn__icon {
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  box-shadow: var(--glow-cyan);
+}

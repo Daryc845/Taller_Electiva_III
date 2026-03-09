@@ -1,0 +1,11 @@
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .btn,
+  .icon-btn,
+  .segmented__item,
+  .status,
+  .role-card,
+  .status__codebtn {
+    transition: none !important;
+  }
+}

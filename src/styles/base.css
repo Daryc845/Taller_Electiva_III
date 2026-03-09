@@ -1,0 +1,43 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  background:
+    radial-gradient(
+      900px 600px at 85% 10%,
+      var(--glow-spot-1),
+      transparent 60%
+    ),
+    radial-gradient(
+      700px 520px at 92% 18%,
+      var(--glow-spot-2),
+      transparent 62%
+    ),
+    var(--bg);
+  color: var(--text);
+}
+
+h1,
+h2,
+p {
+  margin: 0;
+}
+
+p {
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+  }
+}
