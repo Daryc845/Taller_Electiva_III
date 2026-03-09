@@ -147,7 +147,8 @@ function normalizeCode(value) {
 
 function isValidCode(code) {
   if (!code) return { valid: false, key: "errors.codeEmpty" };
-  if (code.length < 6) return { valid: false, key: "errors.codeIncomplete" };
   if (!/^\d+$/.test(code)) return { valid: false, key: "errors.codeNumbersOnly" };
+  if (code.length < 6) return { valid: false, key: "errors.codeIncomplete" };
+
   return { valid: true };
 }
