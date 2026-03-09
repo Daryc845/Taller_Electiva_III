@@ -14,6 +14,9 @@ export const state = {
   // - status: "open" | "closed" | "pending" (placeholder para futuras operaciones async)
   session: null,
 
+  //Estado propio del estudiante (separado del Teacher)
+  studentSession: null,
+
   // Estado de UI global (mensajes, errores y loading)
   ui: {
     isLoading: false,
@@ -63,6 +66,17 @@ export function setUI(patchOrUpdater) {
   Object.assign(state.ui, patch);
 }
 
+export function setStudentSession(patchOrUpdater) {
+  const patch =
+    typeof patchOrUpdater === "function"
+      ? patchOrUpdater(state.studentSession)
+      : patchOrUpdater;
+
+  if (!patch || typeof patch !== "object") return;
+
+  Object.assign(state.studentSession ??= {}, patch); // ??= crea {} si es null
+}
+
 /**
  * Limpia mensajes/errores (útil al navegar entre pantallas o después de acciones).
  */
@@ -83,6 +97,7 @@ export function resetApp() {
   setState({
     role: null,
     session: null,
+    studentSession: null,
   });
   resetUI();
   setUI({ studentCodeDraft: "" });

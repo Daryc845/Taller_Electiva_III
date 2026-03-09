@@ -1,10 +1,11 @@
 // src/ui/pages/StudentPage.js
 // Panel del estudiante: captura el código de sesión y prepara el flujo para unirse (futuro async).
 
-import { state, setUI, resetApp } from "../../state/state.js";
+import { state, setStudentSession, setUI, resetApp } from "../../state/state.js";
 import { triggerRender } from "../render.js";
 import { t } from "../../i18n/i18n.js";
 import { EVENT, logEvent } from "../../services/activity-log.service.js";
+import { validateSessionCode } from "../../services/session.service.js";
 
 export function createStudentPage() {
   const container = document.createElement("main");
@@ -37,14 +38,10 @@ export function createStudentPage() {
   input.value = state.ui?.studentCodeDraft || "";
 
   input.addEventListener("input", (e) => {
-    let normalized = normalizeCode(e.target.value);
-
+    const normalized = normalizeCode(e.target.value);
     e.target.value = normalized;
-    
     setUI({ studentCodeDraft: normalized });
   });
-
-  
 
   field.append(label, input);
 
@@ -53,12 +50,14 @@ export function createStudentPage() {
   btnJoin.type = "button";
   btnJoin.textContent = t("student.join");
 
-  btnJoin.addEventListener("click", () => {
+  const alreadyJoined = state.studentSession?.status === "open";
+  btnJoin.disabled = state.ui?.isLoading || alreadyJoined;
+
+  btnJoin.addEventListener("click", async () => {
     const draft = String(state.ui?.studentCodeDraft || "");
     const code = normalizeCode(draft);
 
     const codeValidation = isValidCode(code);
-    console.log("AS");
     if (!codeValidation.valid) {
       setUI({
         errorKey: codeValidation.key,
@@ -69,16 +68,24 @@ export function createStudentPage() {
       triggerRender();
       return;
     }
-    
-    // En esta fase solo confirmamos intención (UI); no validamos contra backend aún.
-    setUI({
-      errorKey: "",
-      errorParams: null,
-      messageKey: "student.joining",
-      messageParams: null,
-    });
 
-    triggerRender();
+    await runAction({
+      loadingKey: "student.joining",
+      action: async () => {
+        const result = await validateSessionCode();
+
+        if (!result.valid) {
+          const err = new Error("CODE_NOT_FOUND");
+          err.code = "errors.codeInvalid";
+          throw err;
+        }
+
+        setStudentSession({ status: "open", code });
+        logEvent(EVENT.SESSION_OPENED, { code });
+      },
+      successKey: "student.joinedOk",
+      successParams: { code },
+    });
   });
 
   const btnBack = document.createElement("button");
@@ -89,7 +96,6 @@ export function createStudentPage() {
   btnBack.addEventListener("click", () => {
     logEvent(EVENT.BACK_HOME, { from: "student" });
     resetApp();
-    setUI({ studentCodeDraft: "" });
     triggerRender();
   });
 
@@ -97,23 +103,51 @@ export function createStudentPage() {
   return container;
 }
 
+async function runAction({ loadingKey, action, successKey, successParams = null }) {
+  setUI({
+    isLoading: true,
+    messageKey: loadingKey,
+    messageParams: null,
+    errorKey: "",
+    errorParams: null,
+  });
+  triggerRender();
+
+  try {
+    await action();
+    setUI({
+      messageKey: successKey,
+      messageParams: successParams,
+      errorKey: "",
+      errorParams: null,
+    });
+  } catch (err) {
+    setUI({
+      errorKey: err?.code || "errors.unknown",
+      errorParams: null,
+      messageKey: "",
+      messageParams: null,
+    });
+  } finally {
+    setUI({ isLoading: false });
+    triggerRender();
+  }
+}
+
 function getStudentInfoText() {
-  if (state.session?.code && state.session?.status === "open") {
-    return t("student.connectedAs", { code: state.session.code });
+  if (state.studentSession?.status === "open") {
+    return t("student.connectedAs", { code: state.studentSession.code });
   }
   return t("student.notConnected");
 }
 
 function normalizeCode(value) {
-  // Mantenerlo simple para estudiantes: elimina espacios y deja solo dígitos.
   return String(value).trim().replace(/\s+/g, "").replace(/[^\d]/g, "").slice(0, 6);
 }
 
 function isValidCode(code) {
-  // Validación mínima y didáctica: entre 4 y 10 dígitos.
   if (!code) return { valid: false, key: "errors.codeEmpty" };
   if (code.length < 6) return { valid: false, key: "errors.codeIncomplete" };
   if (!/^\d+$/.test(code)) return { valid: false, key: "errors.codeNumbersOnly" };
-
   return { valid: true };
 }

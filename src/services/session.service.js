@@ -14,6 +14,12 @@ const CLOSE_FAIL_RATE = 0.2; // 20%
 const CODE_MIN = 100000;
 const CODE_RANGE = 900000;
 
+const VALIDATION_DELAY_MS = 300;
+const VALIDATION_DELAY_RANGE = 300; // 300–600ms total
+const VALIDATION_FAIL_RATE = 0.2;   // 20% falla total
+// Del 20% que falla: 50% credenciales, 50% sistema
+const VALIDATION_CREDENTIALS_RATE = 0.5;
+
 function makeSession() {
   return {
     status: "open",
@@ -56,6 +62,27 @@ export async function closeSession(session) {
   }
 
   return { ...session, status: "closed" };
+}
+
+/**
+ * Simula validar un código de sesión.
+ * - Tarda 300–600ms
+ * - 20% falla: mitad por credenciales (código no existe), mitad por sistema
+ * - Retorna { valid: true } simulando que el servidor encontró la sesión
+ * - Retorna { valid: false } simulando que el servidor NO encontró la sesión
+ */
+export async function validateSessionCode() {
+  await sleep(VALIDATION_DELAY_MS + Math.random() * VALIDATION_DELAY_RANGE);
+
+  if (Math.random() < VALIDATION_FAIL_RATE) {
+    const isCredentials = Math.random() < VALIDATION_CREDENTIALS_RATE;
+    const err = new Error(isCredentials ? "INVALID_CREDENTIALS" : "SYSTEM_ERROR");
+    err.code = isCredentials
+      ? "errors.codeInvalid"      // 50%: código no existe en el servidor
+      : "errors.validationFailed"; // 50%: error interno del sistema
+    throw err;
+  }
+  return { valid: true };
 }
 
 /**

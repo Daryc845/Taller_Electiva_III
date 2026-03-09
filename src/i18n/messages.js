@@ -86,6 +86,7 @@ export const messages = {
       codePlaceholder: "Ejemplo: 170325",
       join: "Unirme",
       joining: "Uniéndome…",
+      joinedOk: "Unido a la sesión: {code} ✅",
       connectedAs: "Conectado a la sesión: {code}",
       notConnected: "Aún no estás conectado a una sesión.",
     },
@@ -101,6 +102,8 @@ export const messages = {
       codeEmpty: "El código no puede estar vacío.",
       codeIncomplete: "El código debe tener al menos 6 dígitos.",
       codeNumbersOnly: "El código solo puede contener números.",
+      codeInvalid: "Código incorrecto. Verifica con tu docente.",
+      validationFailed: "Error del sistema al validar. Intenta de nuevo.",
     },
   },
 
@@ -187,6 +190,7 @@ export const messages = {
       codePlaceholder: "Example: 170325",
       join: "Join",
       joining: "Joining…",
+      joinedOk: "Joined session: {code} ✅",
       connectedAs: "Connected to session: {code}",
       notConnected: "You are not connected to a session yet.",
     },
@@ -204,6 +208,8 @@ export const messages = {
       codeEmpty: "The code cannot be empty.",
       codeIncomplete: "The code must have at least 6 digits.",
       codeNumbersOnly: "The code can only contain numbers.",
+      codeInvalid: "Incorrect code. Check with your teacher.",
+      validationFailed: "System error while validating. Please try again.",
     },
   },
 };
