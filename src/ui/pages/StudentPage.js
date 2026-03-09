@@ -40,7 +40,7 @@ export function createStudentPage() {
     let normalized = normalizeCode(e.target.value);
 
     e.target.value = normalized;
-
+    
     setUI({ studentCodeDraft: normalized });
   });
 
@@ -58,6 +58,7 @@ export function createStudentPage() {
     const code = normalizeCode(draft);
 
     const codeValidation = isValidCode(code);
+    console.log("AS");
     if (!codeValidation.valid) {
       setUI({
         errorKey: codeValidation.key,
@@ -68,7 +69,7 @@ export function createStudentPage() {
       triggerRender();
       return;
     }
-
+    
     // En esta fase solo confirmamos intención (UI); no validamos contra backend aún.
     setUI({
       errorKey: "",
@@ -114,5 +115,5 @@ function isValidCode(code) {
   if (code.length < 6) return { valid: false, key: "errors.codeIncomplete" };
   if (!/^\d+$/.test(code)) return { valid: false, key: "errors.codeNumbersOnly" };
 
-  return true;
+  return { valid: true };
 }
